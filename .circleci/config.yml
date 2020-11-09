@@ -27,15 +27,9 @@ jobs:
             set -x
             docker-compose up -d
             docker-compose run --rm db sh -c "psql --version"
-
-      # - run:
-      #     name: Run Docker container
-      #     command: |
-      #       set -x
-      #       docker-compose up -d
-      #       sleep 10
-      #       docker ps -f status=running
-      #       docker-compose logs
+            sleep 10
+            docker ps -f status=running
+            docker-compose logs
 
       - run:
           name: Down Docker container and Finish pipeline
