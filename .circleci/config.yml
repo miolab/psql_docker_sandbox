@@ -35,11 +35,7 @@ jobs:
           command: |
             set -x
             docker-compose up -d
-            docker-compose exec db bash
-            sleep 5
-            psql --version
-            psql -U postgres
-            exit
+            docker-compose run --rm db sh -c "psql --version"
             sleep 5
             docker ps -f status=running
             docker-compose logs
