@@ -36,6 +36,7 @@ jobs:
             set -x
             docker-compose up -d
             docker-compose run --rm db sh -c "psql --version"
+            docker-compose exec db bash
             psql --version
             psql -U postgres
             exit
