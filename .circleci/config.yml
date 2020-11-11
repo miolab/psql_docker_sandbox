@@ -22,7 +22,7 @@ jobs:
           name: Confirm directory state
           command: |
             set -x
-            pwd && ls && ls db/
+            pwd && ls -a && ls db/
 
       - run:
           name: Build Docker container
@@ -36,7 +36,11 @@ jobs:
             set -x
             docker-compose up -d
             docker-compose run --rm db sh -c "psql --version"
-            sleep 10
+            docker-compose exec db bash
+            sleep 5
+            psql -U {$POSTGRES_USER}
+            sleep 5
+            exit
             docker ps -f status=running
             docker-compose logs
 
