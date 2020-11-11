@@ -4,26 +4,25 @@ jobs:
     machine:
       image: ubuntu-1604:202007-01
 
-    working_directory: ~/db
-
     steps:
       - checkout
+
+      - run:
+          name: Set Environment Variables for docker-compose
+          command: |
+            set -x
+            touch .env
+            echo POSTGRES_USER=$POSTGRES_USER >> .env
+            echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD >> .env
+            echo POSTGRES_DB=$POSTGRES_DB >> .env
+            echo POSTGRES_PORT=$POSTGRES_PORT >> .env
+            cat .env
 
       - run:
           name: Confirm directory state
           command: |
             set -x
-            pwd && ls
-
-      - run:
-          name: Set Environment Variables
-          command: |
-            touch .env
-            echo POSTGRES_USER=$POSTGRES_USER > .env
-            echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD > .env
-            echo POSTGRES_DB=$POSTGRES_DB > .env
-            echo POSTGRES_PORT=$POSTGRES_PORT > .env
-            cat .env
+            pwd && ls && ls db/
 
       - run:
           name: Build Docker container
