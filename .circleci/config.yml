@@ -4,16 +4,25 @@ jobs:
     machine:
       image: ubuntu-1604:202007-01
 
-    working_directory: ~/db
-
     steps:
       - checkout
+
+      - run:
+          name: Set Environment Variables for docker-compose
+          command: |
+            set -x
+            touch .env
+            echo POSTGRES_USER=$POSTGRES_USER >> .env
+            echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD >> .env
+            echo POSTGRES_DB=$POSTGRES_DB >> .env
+            echo POSTGRES_PORT=$POSTGRES_PORT >> .env
+            cat .env
 
       - run:
           name: Confirm directory state
           command: |
             set -x
-            pwd && ls
+            pwd && ls -a && ls db/
 
       - run:
           name: Build Docker container
@@ -27,7 +36,7 @@ jobs:
             set -x
             docker-compose up -d
             docker-compose run --rm db sh -c "psql --version"
-            sleep 10
+            sleep 5
             docker ps -f status=running
             docker-compose logs
 
